@@ -172,3 +172,65 @@ function logToPage(message) {
    return true;
  });
 })();
+
+function createPersistentPopup() {
+    const popup = document.createElement('div');
+    popup.id = 'tutorEnhancementPopup';
+    popup.innerHTML = `
+        <div class="popup-content" style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10000;
+            min-width: 300px;
+        ">
+            <h3 style="margin: 0 0 10px">Tutor Enhancement</h3>
+            <div class="input-group">
+                <label for="deepseekKey">DeepSeek API Key:</label>
+                <input type="password" id="deepseekKey" style="width: 100%; margin: 5px 0; padding: 5px;">
+            </div>
+            <div id="keyStatus" style="margin-top: 10px; font-size: 12px;"></div>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+    
+    const input = popup.querySelector('#deepseekKey');
+    input.addEventListener('input', async (e) => {
+        const newKey = e.target.value;
+        await chrome.storage.local.set({ deepseekKey: newKey });
+        window.postMessage({
+            type: 'UPDATE_SETTINGS',
+            settings: { deepseekKey: newKey }
+        }, '*');
+        updateKeyStatus(newKey);
+    });
+
+    function updateKeyStatus(key) {
+        const status = popup.querySelector('#keyStatus');
+        if (key) {
+            status.textContent = '✓ API key configured';
+            status.style.color = '#28a745';
+        } else {
+            status.textContent = '⚠️ API key required';
+            status.style.color = '#dc3545';
+        }
+    }
+
+    // Initialize with stored key
+    chrome.storage.local.get(['deepseekKey'], result => {
+        input.value = result.deepseekKey || '';
+        updateKeyStatus(result.deepseekKey);
+    });
+}
+
+// Add this at the end of the file
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createPersistentPopup);
+} else {
+    createPersistentPopup();
+}
