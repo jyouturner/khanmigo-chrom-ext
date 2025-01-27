@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "KhanMigo Extension",
+  "version": "1.0",
+  "description": "AI-powered tutoring enhancement for Khan Academy",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.deepseek.com/*",
+    "https://www.khanacademy.org/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.khanacademy.org/*"],
+      "js": ["config.js", "contentLoader.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["solutionInjector.js"],
+      "matches": ["https://www.khanacademy.org/*"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  }
+}
