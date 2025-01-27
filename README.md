@@ -2,14 +2,17 @@
 
 A Chrome extension that enhances tutoring interactions by intercepting and augmenting tutoring requests with additional pedagogical guidance using the DeepSeek API.
 
-## Features
+## How It Works
 
 - Intercepts tutoring requests to Khan Academy's AI system
-- Enhances tutor responses with pedagogical guidance from DeepSeek API
-- Real-time chat message monitoring
-- Configurable API settings via popup interface
-- Debug logging system
-- Automatic retry mechanism for failed operations
+- Fetches guidance from DeepSeek API
+- Injects guidance into tutoring requests (the "customPrompt" field)
+
+## Results
+
+- **Does not achieve the goal** of making the Tutor Bot more helpful (seems it does not use the customPrompt field)
+- **Useful as a proof of concept** for intercepting and augmenting API requests.
+
 
 ## Project Structure
 
