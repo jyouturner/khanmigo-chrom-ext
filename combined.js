@@ -489,18 +489,17 @@ console.log('CONFIG ready:', CONFIG); // solutionInjector.js
             if (enhancedInstructions) {
               const newBody = {
                 ...body,
-                message: `<system>${enhancedInstructions}</system>\n${studentMsg}`,
+                message: studentMsg,
+                customPrompt: enhancedInstructions,
                 command: 'chat_message'
               };
               
               options.body = JSON.stringify(newBody);
             }
     
-            // Make the fetch request
             const response = await originalFetch(url, options);
             const reader = response.body.getReader();
     
-            // Create a new stream that we can both read and return
             const stream = new ReadableStream({
               async start(controller) {
                 const decoder = new TextDecoder();
@@ -508,23 +507,6 @@ console.log('CONFIG ready:', CONFIG); // solutionInjector.js
                   while (true) {
                     const {value, done} = await reader.read();
                     if (done) break;
-                    
-                    const chunk = decoder.decode(value);
-                    const lines = chunk.split('\n').filter(line => line.trim());
-                    
-                    for (const line of lines) {
-                      try {
-                        const jsonStr = line.replace(/^data: /, '');
-                        const data = JSON.parse(jsonStr);
-                        
-                        if (data.type === 'metadata' && data.data?.conversation) {
-                          console.log('[Khanmigo] Full conversation:', data.data.conversation);
-                        }
-                      } catch (e) {
-                        // Ignore parsing errors for non-JSON chunks
-                      }
-                    }
-                    
                     controller.enqueue(value);
                   }
                   controller.close();
@@ -533,7 +515,7 @@ console.log('CONFIG ready:', CONFIG); // solutionInjector.js
                 }
               }
             });
-            // Return a new response with our transformed stream
+    
             return new Response(stream, {
               headers: response.headers,
               status: response.status,
@@ -545,7 +527,6 @@ console.log('CONFIG ready:', CONFIG); // solutionInjector.js
             return originalFetch(url, options);
           }
         }
-        
         return originalFetch(url, options);
       };
     }
