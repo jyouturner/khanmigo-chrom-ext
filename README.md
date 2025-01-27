@@ -15,7 +15,7 @@ A Chrome extension that enhances tutoring interactions by intercepting and augme
 
 - **Does not achieve the goal** of making the Tutor Bot more helpful:
   - The Tutor Bot does not seem to use the customPrompt field
-  - Understandably the team at Khan Academy must set the output token to be low. This is understandable from cost perspective, but unfortunately it makes the Tutor Bot less effective.
+  - The team at Khan Academy must set the output token to be low. This is understandable from cost management perspective, but unfortunately it makes the Tutor Bot less effective.
 - **Useful as a proof of concept** for intercepting and augmenting API requests.
 
 
