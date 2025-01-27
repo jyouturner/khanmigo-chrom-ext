@@ -8,6 +8,8 @@ A Chrome extension that enhances tutoring interactions by intercepting and augme
 - Fetches guidance from DeepSeek API
 - Injects guidance into tutoring requests (the "customPrompt" field)
 
+<img src="./how_it_works.jpg" alt="How It Works" width="800">
+
 ## Results
 
 - **Does not achieve the goal** of making the Tutor Bot more helpful (seems it does not use the customPrompt field)

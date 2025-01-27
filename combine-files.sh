@@ -85,4 +85,3 @@ done
 echo "Project context has been compiled into $output_file"
 echo "Total size: $(wc -l < "$output_file") lines"
 
-cat contentLoader.js config.js solutionInjector.js > combined.js
